@@ -1,4 +1,4 @@
-include /home/ayan/code/common_flags.mk
+include ../../build/common_flags.mk
 
 PROJECT = display
 

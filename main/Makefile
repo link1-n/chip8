@@ -1,4 +1,4 @@
-include /home/ayan/code/common_flags.mk
+include ../build/common_flags.mk
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
