@@ -1,1 +1,3 @@
 cpu/lib/chip8.o
+gpu/lib/display.o
+main/main
