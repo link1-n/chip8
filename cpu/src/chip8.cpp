@@ -125,6 +125,21 @@ void Chip8::loadRom(char const* fileName) {
 	}
 }
 
+void Chip8::cycle() {
+	opCode_ = memory_[pc_] << 8u | memory_[pc_ + 1];
+
+	pc_ += 2;
+
+	((*this).*(table_[(opCode_ & 0xF000u) >> 12u])) ();
+
+	if (delayTimer_ > 0) {
+		delayTimer_--;
+	}
+	if (soundTimer_ > 0) {
+		soundTimer_--;
+	}
+}
+
 /* CLS */
 void Chip8::OP_00E0() {
 	memset(screen_, 0, sizeof(screen_));
@@ -182,7 +197,7 @@ void Chip8::OP_5xy0() {
 /* LD Vx, byte */
 void Chip8::OP_6xkk() {
 	uint8_t Vx = (opCode_ & 0x0F00u) >> 8u;
-	uint8_t byte = opCode_ * 0x00FFu;
+	uint8_t byte = opCode_ & 0x00FFu;
 
 	registers_[Vx] = byte;
 }

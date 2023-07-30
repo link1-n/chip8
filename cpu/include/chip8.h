@@ -22,8 +22,6 @@ private:
 	uint8_t sp_{};
 	uint8_t soundTimer_{};
 	uint8_t delayTimer_{};
-	uint8_t keypad_[16]{};
-	uint32_t screen_[64 * 32]{};
 	uint16_t opCode_;
 
 	std::default_random_engine randGen_;
@@ -36,12 +34,6 @@ private:
 	Chip8Func tableE_[0xE + 1];
 	Chip8Func tableF_[0x65 + 1];
 
-public:
-	/*
-	 * Class Functions
-	 */
-	Chip8(); //Constructor
-	void loadRom(char const* fileName);
 	void setFunctionPtrTable();
 	void Table0();
 	void Table8();
@@ -84,6 +76,16 @@ public:
 	void OP_Fx55();
 	void OP_Fx65();
 	void OP_NULL();
+
+public:
+	uint8_t keypad_[16]{};
+	uint32_t screen_[64 * 32]{};
+	/*
+	 * Class Functions
+	 */
+	Chip8(); //Constructor
+	void loadRom(char const* fileName);
+	void cycle();
 };
 
 #endif

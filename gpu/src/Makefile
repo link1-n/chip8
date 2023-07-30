@@ -1,14 +1,17 @@
 include /home/ayan/code/common_flags.mk
 
-PROJECT = chip8
+PROJECT = display
 
 INC_DIR = ../include
 LIB_DIR = ../lib
 
-all: $(LIB_DIR)/$(PROJECT).o 
+INC_FLAGS = -I /usr/include/SDL2/
+LIBS = -lSDL2
+
+all: $(LIB_DIR)/$(PROJECT).o
 
 $(LIB_DIR)/$(PROJECT).o: $(PROJECT).cpp $(INC_DIR)/$(PROJECT).h
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $(PROJECT).cpp \
+	$(CXX) $(CXXFLAGS) -I$(INC_DIR) $(INC_FLAGS) $(LIBS) -c $(PROJECT).cpp \
 		-o $(LIB_DIR)/$(PROJECT).o
 
 .PHONY: clean
