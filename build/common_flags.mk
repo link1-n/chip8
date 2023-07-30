@@ -12,3 +12,10 @@ CXXFLAGS = -pedantic -Wall -Wextra -Wcast-align -Wcast-qual \
 	   -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel \
 	   -Wstrict-overflow=5 -Wswitch-default -Wundef -Wno-unused -g \
 #	   -Werror
+
+#COLOURS
+GREEN='\033[0;32m'                                                              
+RED='\033[0;31m'                                                                
+YELLOW='\033[0;33m'                                                                
+BLUE='\033[0;34m'
+NC='\033[0m'

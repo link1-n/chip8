@@ -1,7 +1,4 @@
 include ../build/common_flags.mk
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m'
 
 PROJECT = main
 
@@ -18,11 +15,13 @@ LIB_FLAGS = ../cpu/lib/chip8.o \
 all: $(PROJECT) 
 
 $(PROJECT): main.cpp
+	@echo -e ${YELLOW}BUILDING $(PROJECT)${NC}
 	$(CXX) $(CXXFLAGS) $(INC_FLAGS) $(LIB_FLAGS) \
 		$(PROJECT).cpp -o $(PROJECT)
 
 .PHONY: clean dependency clean-dependency
 clean:
+	@echo -e ${RED}CLEAN $(PROJECT)${NC}
 	rm main
 
 dependency:
