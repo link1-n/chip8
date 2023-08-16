@@ -128,6 +128,8 @@ void Chip8::loadRom(char const* fileName) {
 void Chip8::cycle() {
 	opCode_ = memory_[pc_] << 8u | memory_[pc_ + 1];
 
+	//std::cout << parseOpCode(opCode_) << std::endl;
+	
 	pc_ += 2;
 
 	((*this).*(table_[(opCode_ & 0xF000u) >> 12u])) ();
@@ -137,6 +139,102 @@ void Chip8::cycle() {
 	}
 	if (soundTimer_ > 0) {
 		soundTimer_--;
+	}
+}
+
+std::string Chip8::parseOpCode(uint16_t opCode) {
+	unsigned int nibble = (opCode & 0xF000u) >> 12u;
+
+	//std::cout << "yo," << std::hex << nibble << std::dec << std::endl;
+
+	std::stringstream ss;
+	ss << std::setfill('0') << std::setw(4)
+		<< std::hex << opCode << std::dec;
+	std::string res = ss.str();
+
+	std::cout << res << "," << std::hex << nibble << std::dec;
+
+	switch (nibble) {
+		case 0x0u:
+		{
+			uint16_t lastNibble = (opCode & 0x00FFu);
+			std::cout << "," << std::hex << lastNibble << std::dec;
+			switch (lastNibble) {
+				case 0xE0u:
+				{
+					std::cout << ",CLS";
+
+					break;
+				}
+				case 0xEEu:
+				{
+					std::cout << ",RET";
+
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+			break;
+		}
+		case 0x1u:
+		{
+			uint16_t address = opCode & 0x0FFFu;
+			std::cout << ",JP " << std::hex << address << std::dec;
+
+			break;
+		}
+		case 0x2u:
+		{
+			uint16_t address = opCode & 0x0FFFu;
+			std::cout << ",CALL " << std::hex << address << std::dec; 
+
+			break;
+		}
+		case 0x3u:
+		{
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			uint16_t byte = (opCode & 0x00FFu);
+
+			std::cout << ",LD "
+				<< std::hex << Vx << " " << byte << std::dec;
+
+			break;
+		}
+		case 0x4u:
+		{
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			uint16_t byte = (opCode & 0x00FFu);
+
+			std::cout << ",SNE "
+				<< std::hex << Vx << " " << byte << std::dec;
+
+			break;
+		}
+		default:
+		{
+			break;
+		}
+
+	}
+
+	std::cout << std::endl;
+
+	return res;
+}
+
+void Chip8::disassembleRom() {
+	uint16_t programCounter = START_ADDRESS;
+
+	while (programCounter < 4096) {
+		uint16_t opCode = memory_[programCounter] << 8u | memory_[programCounter + 1];
+		std::string instruction = parseOpCode(opCode);
+
+		//std::cout << "ins," << instruction
+		//	<< ",pc," << programCounter << std::endl;
+		programCounter += 2;
 	}
 }
 

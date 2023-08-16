@@ -5,6 +5,8 @@
 #include <random>
 #include <chrono>
 #include <cstring>
+#include <iostream>
+#include <iomanip>
 
 const unsigned int VIDEO_HEIGHT = 32;
 const unsigned int VIDEO_WIDTH = 64;
@@ -77,15 +79,21 @@ private:
 	void OP_Fx65();
 	void OP_NULL();
 
+
 public:
 	uint8_t keypad_[16]{};
 	uint32_t screen_[64 * 32]{};
+
 	/*
 	 * Class Functions
 	 */
-	Chip8(); //Constructor
+	Chip8(); /* Constructor */
+
 	void loadRom(char const* fileName);
 	void cycle();
+
+	void disassembleRom();
+	std::string parseOpCode(uint16_t opCode);
 };
 
 #endif
