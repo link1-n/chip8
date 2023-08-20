@@ -5,8 +5,15 @@ PROJECT = display
 INC_DIR = ../include
 LIB_DIR = ../lib
 
+ifeq ($(UNAME), Darwin)
+INC_FLAGS = -I/opt/homebrew/include/SDL2
+LIBS = -L/opt/homebrew/lib -lSDL2
+endif
+
+ifeq ($(UNAME), Linux)
 INC_FLAGS = -I /usr/include/SDL2/
 LIBS = -lSDL2
+endif
 
 all: $(LIB_DIR)/$(PROJECT).o
 

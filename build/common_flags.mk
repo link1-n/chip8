@@ -1,5 +1,14 @@
+UNAME = $(shell uname)
+
+ifeq ($(UNAME), Linux)
 CC = gcc
 CXX = g++
+endif
+
+ifeq ($(UNAME), Darwin)
+CC = gcc-13
+CXX = g++-13
+endif
 
 CFLAGS = -g -Wextra -Wall -pedantic -Wfloat-equal -Wundef -Wshadow \
          -Wpointer-arith -Wcast-align -Wstrict-prototypes -Wstrict-overflow=5 \

@@ -8,10 +8,19 @@ MODULES = cpu gpu
 INC_FLAGS = -I ../../cpu/include/ \
 	    -I ../../gpu/include/
 
-INC_FLAGS += -I /usr/include/SDL2/
-
 LIB_FLAGS = ../../cpu/lib/chip8.o \
-	    ../../gpu/lib/display.o -lSDL2
+	    ../../gpu/lib/display.o
+
+ifeq ($(UNAME), Darwin)
+INC_FLAGS += -I /opt/homebrew/include/SDL2 
+LIB_FLAGS += -L /opt/homebrew/lib -lSDL2
+endif
+
+ifeq ($(UNAME), Linux)
+INC_FLAGS += -I /usr/include/SDL2/
+LIB_FLAGS += -lSDL2
+endif
+
 
 BIN_DIR = ../bin
 
@@ -30,8 +39,8 @@ $(BIN_DIR)/$(DIS): disassembler.cpp
 .PHONY: clean dependency clean-dependency
 clean:
 	@echo -e ${RED}CLEAN $(EMU) $(DIS)${NC}
-	rm $(BIN_DIR)/$(EMU)
-	rm $(BIN_DIR)/$(DIS)
+	rm -f $(BIN_DIR)/$(EMU)
+	rm -f $(BIN_DIR)/$(DIS)
 
 dependency:
 	@echo -e ${GREEN}BUILDING DEPENDENCIES${NC}
