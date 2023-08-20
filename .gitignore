@@ -1,3 +1,4 @@
 cpu/lib/chip8.o
 gpu/lib/display.o
-main/main
+main/src/bin/disassembler
+main/src/bin/emulator
