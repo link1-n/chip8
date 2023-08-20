@@ -1,6 +1,6 @@
 cpu/lib/chip8.o
 gpu/lib/display.o
-main/src/bin/disassembler
-main/src/bin/disassembler.dSYM/
-main/src/bin/emulator
-main/src/bin/emulator.dSYM/
+main/bin/disassembler
+main/bin/disassembler.dSYM/
+main/bin/emulator
+main/bin/emulator.dSYM/
