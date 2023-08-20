@@ -128,8 +128,6 @@ void Chip8::loadRom(char const* fileName) {
 void Chip8::cycle() {
 	opCode_ = memory_[pc_] << 8u | memory_[pc_ + 1];
 
-	//std::cout << parseOpCode(opCode_) << std::endl;
-	
 	pc_ += 2;
 
 	((*this).*(table_[(opCode_ & 0xF000u) >> 12u])) ();
@@ -143,23 +141,18 @@ void Chip8::cycle() {
 }
 
 std::string Chip8::parseOpCode(uint16_t opCode) {
+	std::string res = "";
+
 	unsigned int nibble = (opCode & 0xF000u) >> 12u;
 
-	//std::cout << "yo," << std::hex << nibble << std::dec << std::endl;
-
-	std::stringstream ss;
-	ss << std::setfill('0') << std::setw(4)
+	std::cout << std::setw(4) << std::setfill('0')
 		<< std::hex << opCode << std::dec;
-	std::string res = ss.str();
-
-	std::cout << res << "," << std::hex << nibble << std::dec;
 
 	switch (nibble) {
 		case 0x0u:
 		{
-			uint16_t lastNibble = (opCode & 0x00FFu);
-			std::cout << "," << std::hex << lastNibble << std::dec;
-			switch (lastNibble) {
+			uint16_t lastByte = (opCode & 0x00FFu);
+			switch (lastByte) {
 				case 0xE0u:
 				{
 					std::cout << ",CLS";
@@ -174,6 +167,7 @@ std::string Chip8::parseOpCode(uint16_t opCode) {
 				}
 				default:
 				{
+					std::cout << ",not found";
 					break;
 				}
 			}
@@ -213,11 +207,316 @@ std::string Chip8::parseOpCode(uint16_t opCode) {
 
 			break;
 		}
-		default:
+		case 0x5u:
 		{
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			unsigned int Vy = (opCode & 0x00F0u) >> 4u;
+
+			std::cout << ",SE " << std::hex
+				<< Vx << " " << Vy << std::dec;
+
+			break;
+
+		}
+		case 0x6u:
+		{
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			uint16_t byte = (opCode & 0x00FFu);
+
+			std::cout << ",LD " << std::hex
+				<< Vx << " " << byte << std::dec;
+
 			break;
 		}
+		case 0x7u:
+		{
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			uint16_t byte = (opCode & 0x00FFu);
 
+			std::cout << ",ADD " << std::hex
+				<< Vx << " " << byte << std::dec;
+			break;
+		}
+		case 0x8u:
+		{
+			unsigned int lastNibble = (opCode & 0x000Fu);
+			switch (lastNibble) {
+				case 0x0u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",LD " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0x1u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",OR " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0x2u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",AND " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0x3u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",XOR " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0x4u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",ADD " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0x5u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",SUB " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0x6u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",SHR " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0x7u:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",SUBN " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				case 0xEu:
+				{
+					unsigned int Vx = (opCode & 0x0F00u)
+						>> 8u;
+					unsigned int Vy = (opCode & 0x00F0u)
+						>> 4u;
+
+					std::cout << ",SHL " << std::hex
+						<< Vx << " " << Vy
+						<< std::dec;
+
+					break;
+				}
+				default:
+				{
+					std::cout << ",not found";
+					break;
+				}
+			}
+			break;
+		}
+		case 0x9u:
+		{
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			unsigned int Vy = (opCode & 0x00F0u) >> 4u;
+
+			std::cout << ",SNE " << std::hex
+				<< Vx << " " << Vy << std::dec;
+
+			break;
+		}
+		case 0xAu:
+		{
+			uint16_t address = (opCode & 0x0FFFu);
+
+			std::cout << ",LD I " << std::hex
+				<< address << std::dec;
+
+			break;
+		}
+		case 0xBu:
+		{
+			uint16_t address = (opCode & 0x0FFFu);
+			std::cout << ",JP V0 " << std::hex
+				<< address << std::dec;
+
+			break;
+		}
+		case 0xCu:
+		{
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			uint16_t byte = (opCode & 0x00FFu);
+
+			std::cout << ",RND " << std::hex
+				<< Vx << " " << byte << std::dec;
+
+			break;
+		}
+		case 0xDu:
+		{
+			unsigned int Vx = (opCode & 0x0F00) >> 8u;
+			unsigned int Vy = (opCode & 0x00F0u) >> 4u;
+			unsigned int height = (opCode & 0x000F);
+
+			std::cout << ",DRW " << std::hex
+				<< Vx << " " << Vy << " " << height
+				<< std::dec;
+
+			break;
+		}
+		case 0xEu:
+		{
+			uint8_t lastByte = (opCode & 0x00FFu);
+			switch (lastByte) {
+				case 0x9Eu:
+				{
+					uint8_t Vx = (opCode & 0x0F00u)
+						>> 8u;
+					std::cout << ",SKP " << std::hex
+						<< Vx << std::dec;
+
+					break;
+				}
+				case 0xA1u:
+				{
+					uint8_t Vx = (opCode & 0x0F00u)
+						>> 8u;
+					std::cout << ",SKNP " << std::hex
+						<< Vx << std::dec;
+
+					break;
+				}
+				default:
+				{
+					std::cout << ",not found";
+					break;
+				}
+			}
+			break;
+		}
+		case 0xFu:
+		{
+			uint8_t lastByte = (opCode & 0x00FFu);
+			unsigned int Vx = (opCode & 0x0F00u) >> 8u;
+			switch (lastByte) {
+				case 0x07:
+				{
+					std::cout << ",LD " << std::hex
+						<< Vx << std::dec << " DT";
+					break;
+				}
+				case 0x0A:
+				{
+					std::cout << ",LD " << std::hex
+						<< Vx << std::dec << " K";
+					break;
+				}
+				case 0x15:
+				{
+					std::cout << ",LD DT " << std::hex
+						<< Vx << std::dec;
+					break;
+				}
+				case 0x18:
+				{
+					std::cout << ",LD ST " << std::hex
+						<< Vx << std::dec;
+					break;
+				}
+				case 0x1E:
+				{
+					std::cout << ",ADD I " << std::hex
+						<< Vx << std::dec;
+					break;
+				}
+				case 0x29:
+				{
+					std::cout << ",LD F " << std::hex
+						<< Vx << std::dec;
+					break;
+				}
+				case 0x33:
+				{
+					std::cout << ",LD B " << std::hex
+						<< Vx << std::dec;
+					break;
+				}
+				case 0x55:
+				{
+					std::cout << ",LD [I] " << std::hex
+						<< Vx << std::dec;
+					break;
+				}
+				case 0x65:
+				{
+					std::cout << ",LD " << std::hex
+						<< Vx << std::dec << " [I]";
+					break;
+				}
+				default:
+				{
+					std::cout << ",not found";
+					break;
+				}
+			}
+			break;
+		}
+		default:
+		{
+			std::cout << ",not found";
+			break;
+		}
 	}
 
 	std::cout << std::endl;
@@ -229,11 +528,12 @@ void Chip8::disassembleRom() {
 	uint16_t programCounter = START_ADDRESS;
 
 	while (programCounter < 4096) {
-		uint16_t opCode = memory_[programCounter] << 8u | memory_[programCounter + 1];
+		uint16_t opCode = memory_[programCounter] << 8u |
+			memory_[programCounter + 1];
+
+		std::cout << std::hex << programCounter << std::dec << ",";
 		std::string instruction = parseOpCode(opCode);
 
-		//std::cout << "ins," << instruction
-		//	<< ",pc," << programCounter << std::endl;
 		programCounter += 2;
 	}
 }

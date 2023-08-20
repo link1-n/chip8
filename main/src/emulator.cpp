@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 
 	bool quit = false;
 
-	chip8.disassembleRom();
+//	chip8.disassembleRom();
 
 	while(!quit) {
 		quit = display.processInput(chip8.keypad_);
