@@ -46,6 +46,7 @@ void Chip8::setFunctionPtrTable() {
 	table_[0x6] = &Chip8::OP_6xkk;
 	table_[0x7] = &Chip8::OP_7xkk;
 	table_[0x8] = &Chip8::Table8;
+	table_[0x9] = &Chip8::OP_9xy0;
 	table_[0xA] = &Chip8::OP_Annn;
 	table_[0xB] = &Chip8::OP_Bnnn;
 	table_[0xC] = &Chip8::OP_Cxkk;
